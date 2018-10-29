@@ -1,52 +1,33 @@
-class Road(object):
-    def __init__(self, h):
-        self.hauteur_piste = h
+from kivy.uix.widget import Widget
+from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty
+from kivy.logger import Logger
+from kivy.core.window import Window
 
-class Car(object):
+class Car(Widget):
+    road = ObjectProperty(rebind=True)
+    y = NumericProperty(0)
+    current_piste = 2
 
-    def __init__(self, road):
-        self.largeur = 100
-        self.hauteur = 60
-        self.current_piste = 2
-        self.x = self.largeur/2
-        self.calcule_position(road)
+    def calcule_position(self):
+        self.y = self.road.hauteur_piste * self.current_piste
 
-    def calcule_position(self, road):
-        self.y = road.hauteur_piste * self.current_piste
-
-    def up(self, road):
+    def up(self, *args):
         if(self.current_piste < 4):
             self.current_piste = self.current_piste + 1
-            self.calcule_position(road)
 
-    def down(self, road):
+    def down(self, *args):
         if(self.current_piste > 0):
             self.current_piste = self.current_piste - 1
-            self.calcule_position(road)
 
-#######
+    def tick(self):
+        self.calcule_position()
+        
+    def __init__(self, **kwargs):
+        super(Car, self).__init__(**kwargs)
+        Window.bind(on_key_down=self.key)
 
-r = Road(200)
-c = Car(r)
-
-print(c.y)
-c.up(r)
-print(c.y)
-c.down(r)
-print(c.y)
-c.up(r)
-print(c.y)
-c.up(r)
-print(c.y)
-c.up(r)
-print(c.y)
-c.down(r)
-print(c.y)
-c.down(r)
-print(c.y)
-c.down(r)
-print(c.y)
-c.down(r)
-print(c.y)
-c.down(r)
-print(c.y)
+    def key(self, *args):
+        if args[2] == 82:
+            self.up()
+        if args[2] == 81:
+            self.down()
