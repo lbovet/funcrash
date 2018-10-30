@@ -11,11 +11,11 @@ class Car(Widget):
     def calcule_position(self):
         self.y = self.road.hauteur_piste * self.current_piste
 
-    def up(self, *args):
+    def up(self):
         if(self.current_piste < 4):
             self.current_piste = self.current_piste + 1
 
-    def down(self, *args):
+    def down(self):
         if(self.current_piste > 0):
             self.current_piste = self.current_piste - 1
 

@@ -27,8 +27,20 @@ class Game(Widget):
             t.tick()
             if(t.x < 0):
                 self.tomatoes.remove(t)
-                self.remove_widget(t)
+                self.remove_widget(t)                
+            if t.collide_widget(self.car):
+                self.car.current_piste = 2
+                for tom in self.tomatoes:
+                    self.remove_widget(tom)
+                self.tomatoes = list()
+                break  
         self.car.tick()
+
+    def on_touch_down(self, touch):
+        if touch.y > self.height / 2:
+            self.car.up()
+        else:
+            self.car.down()
 
 class FuncrashApp(App):
     road = ObjectProperty(Road())

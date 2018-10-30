@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "local/bin/python"
+    "python.pythonPath": "local/bin/python",
+    "python.linting.pylintEnabled": false
 }
