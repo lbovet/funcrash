@@ -36,7 +36,10 @@ version = 0.4
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = kivy
+requirements = kivy, python3crystax==3.6
+
+
+
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -98,6 +101,7 @@ fullscreen = 0
 
 # (str) Android NDK version to use
 #android.ndk = 9c
+android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.1
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
