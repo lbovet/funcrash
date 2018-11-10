@@ -1,5 +1,7 @@
 [app]
 
+version = 0.10
+
 # (str) Title of your application
 title = Fun Crash
 
@@ -26,13 +28,6 @@ source.exclude_dirs = local
 
 # (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,images/*/*.jpg
-
-# (str) Application versioning (method 1)
-version = 0.9
-
-# (str) Application versioning (method 2)
-# version.regex = __version__ = ['"](.*)['"]
-# version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
