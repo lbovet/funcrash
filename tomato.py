@@ -7,7 +7,6 @@ class Tomato(Widget):
     road = ObjectProperty(rebind=True)
     x = NumericProperty(0)
     y = NumericProperty(0)
-    speed = NumericProperty(0)
 
     def __init__(self, road):
         self.road = road
@@ -17,4 +16,4 @@ class Tomato(Widget):
         self.y = self.road.hauteur_piste * self.piste                
 
     def tick(self):
-        self.x = self.x - self.speed
+        self.x = self.x - self.road.speed

@@ -29,7 +29,6 @@
 <Tomato>:
     size: image.size
     pos: self.x, self.y
-    speed: root.road.longueur / 100
     Image:
         id: image
         source: 'images/tomato01.png'
@@ -44,6 +43,7 @@
         size: root.size
         hauteur: root.height
         longueur: root.width
+        speed: self.longueur / 100
         Car: 
             id: car1
             road: road1

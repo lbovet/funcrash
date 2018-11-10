@@ -1,3 +1,4 @@
+# coding: utf-8
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import NumericProperty, ListProperty, ObjectProperty
@@ -14,26 +15,42 @@ class Game(Widget):
     car = ObjectProperty(None)
     road = ObjectProperty(None)
     tomatoes = list()
-    periode = 50
+    periode_tomates = 50
+    periode_accel = 300
+    speed_mult = 1.1
     current_tick = 0
 
     def tick(self, dt):
         self.current_tick = self.current_tick + 1
-        if(self.current_tick % self.periode == 0):
+        
+        # Ajoute une tomate à chaque "période tomate"
+        if(self.current_tick % self.periode_tomates == 0):
             t = Tomato(self.road)
             self.tomatoes.append(t)
             self.add_widget(t)                
+        
+        # Modifie la vitesse de la route à chaque "période accel"
+        if(self.current_tick % self.periode_accel == 0):
+            self.road.speed = self.road.speed * self.speed_mult
+            self.periode_tomates = round(self.periode_tomates / self.speed_mult)
+
+        # Pour chaque tomate...
         for t in self.tomatoes:
             t.tick()
+
+            # Enlève la tomate si elle est tout à gauche
             if(t.x < 0):
                 self.tomatoes.remove(t)
                 self.remove_widget(t)                
+
+            # Enlève toutes les tomates en cas de collision
             if t.collide_widget(self.car):
                 self.car.current_piste = 2
                 for tom in self.tomatoes:
                     self.remove_widget(tom)
                 self.tomatoes = list()
-                break  
+                break 
+
         self.car.tick()
 
     def on_touch_down(self, touch):

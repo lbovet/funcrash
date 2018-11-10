@@ -6,4 +6,4 @@ class Road(Widget):
     nb_pistes = NumericProperty(0)
     hauteur_piste = NumericProperty(0)
     longueur = NumericProperty(0)
-    
+    speed = NumericProperty(0)
