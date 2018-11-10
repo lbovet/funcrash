@@ -22,7 +22,7 @@
     road: app.road
     Image:
         id: image
-        source: 'images/car01.png'
+        source: 'images/car02.png'
         pos: root.pos
         size: root.road.hauteur_piste * self.image_ratio, root.road.hauteur_piste-1    
 
@@ -33,7 +33,7 @@
         id: image
         source: 'images/tomato01.png'
         pos: root.pos
-        size: root.road.hauteur_piste, root.road.hauteur_piste / self.image_ratio 
+        size: (root.road.hauteur_piste / 2) * self.image_ratio, root.road.hauteur_piste / 2 
 
 <Game>:
     road: road1
