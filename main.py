@@ -1,7 +1,7 @@
 # coding: utf-8
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty, ListProperty, ObjectProperty
+from kivy.properties import NumericProperty, ListProperty, ObjectProperty, StringProperty
 from kivy.vector import Vector
 from kivy.clock import Clock
 from kivy.factory import Factory
@@ -10,10 +10,12 @@ from kivy.logger import Logger
 from road import Road
 from car import Car
 from tomato import Tomato
+import random
 
 class Game(Widget):
     car = ObjectProperty(None)
     road = ObjectProperty(None)
+    src = StringProperty(None)
     tomatoes = list()
     periode_tomates_initiale = 50
     periode_accel = 300
@@ -27,6 +29,8 @@ class Game(Widget):
         for tom in self.tomatoes:
             self.remove_widget(tom)
         self.tomatoes = list()
+        no_car = random.randint(1,2)
+        self.car.children[0].source ="images/car0"+str(no_car)+".png"
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
@@ -44,7 +48,7 @@ class Game(Widget):
         if(self.current_tick % self.periode_tomates == 0):
             self.ajoute_tomate()
             self.ajoute_tomate()
-            
+
         # Modifie la vitesse de la route à chaque "période accel"
         if(self.current_tick % self.periode_accel == 0):
             self.road.speed = self.road.speed * self.speed_mult
