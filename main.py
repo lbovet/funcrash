@@ -13,17 +13,21 @@ from tomato import Tomato
 import random
 
 class Game(Widget):
+    tempo = NumericProperty(0)
     car = ObjectProperty(None)
     road = ObjectProperty(None)
     src = StringProperty(None)
+    score = NumericProperty(0)
+    high_score = NumericProperty(0)
     tomatoes = list()
-    periode_tomates_initiale = 50
+    periode_tomates_initiale = 60
     periode_accel = 300
     speed_mult = 1.1
-    current_tick = 0
+    current_tick = -5
 
     def reset(self):
-        self.periode_tomates = self.periode_tomates_initiale
+        self.current_tick = 2
+        self.periode_tomates = self.periode_tomates_initiale * self.tempo
         self.road.speed = self.road_speed_initiale
         self.car.current_piste = 2
         for tom in self.tomatoes:
@@ -38,12 +42,18 @@ class Game(Widget):
         self.add_widget(t)
 
     def tick(self, dt):
-        if(self.current_tick == 0):
+        self.current_tick = self.current_tick + 1
+        if(self.current_tick < 1):
+            return
+
+        if(self.current_tick == 1):
             self.road_speed_initiale = self.road.speed
             self.reset()
 
-        self.current_tick = self.current_tick + 1
-        
+        self.score = str(self.current_tick)
+        if(self.score > self.high_score):
+            self.high_score = self.score
+
         # Ajoute une tomate à chaque "période tomate"
         if(self.current_tick % self.periode_tomates == 0):
             self.ajoute_tomate()
@@ -61,12 +71,12 @@ class Game(Widget):
             # Enlève la tomate si elle est tout à gauche
             if(t.x < -self.road.longueur):
                 self.tomatoes.remove(t)
-                self.remove_widget(t)                
+                self.remove_widget(t)
 
             # Réinitialise en cas de collision
             if t.collide_widget(self.car):
                 self.reset()
-                break 
+                break
 
         self.car.tick()
 
