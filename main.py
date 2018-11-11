@@ -10,6 +10,7 @@ from kivy.logger import Logger
 from road import Road
 from car import Car
 from tomato import Tomato
+from state import State
 import random
 
 class Game(Widget):
@@ -24,6 +25,10 @@ class Game(Widget):
     periode_accel = 300
     speed_mult = 1.1
     current_tick = -5
+
+    def __init__(self, state, **kwargs):
+        super(Game, self).__init__(**kwargs)
+        self.state = state
 
     def reset(self):
         self.current_tick = 2
@@ -90,7 +95,7 @@ class FuncrashApp(App):
     road = ObjectProperty(Road())
 
     def build(self):
-        game = Game()
+        game = Game(State(self))
         Clock.schedule_interval(game.tick, 1.0 / 30.0)
         return game
 
