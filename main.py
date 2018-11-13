@@ -38,7 +38,7 @@ class Game(Widget):
         for tom in self.tomatoes:
             self.remove_widget(tom)
         self.tomatoes = list()
-        no_car = random.randint(1,2)
+        no_car = random.randint(1,3)
         self.car.children[0].source ="images/car0"+str(no_car)+".png"
         if self.state["high_score"] :
             self.high_score = self.state.high_score

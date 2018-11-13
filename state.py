@@ -7,18 +7,21 @@ class State(object):
     app = None
 
     def __init__(self, app):
+        self.app = app
         try:
-            self.app = app
             with open(self.app.user_data_dir + "/state") as file:
                 self.data = pickle.load(file)
-        except IOError:
+        except:
             pass
 
-    def __setattr__(self, key, value):
+    def __setattr__(self, key, value):        
         if key not in [ "app", "data" ]:
             self.data[key] = value
-            with open(self.app.user_data_dir + "/state", "w") as file:
-                pickle.dump(self.data, file)
+            try:
+                with open(self.app.user_data_dir + "/state", "w") as file:
+                    pickle.dump(self.data, file)
+            except:
+                pass
         else:
             object.__setattr__(self, key, value)
 
