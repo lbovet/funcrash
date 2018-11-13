@@ -1,7 +1,7 @@
 from kivy.app import App
 import pickle
 
-class State(object):    
+class State(object):
 
     data = dict()
     app = None
@@ -21,9 +21,18 @@ class State(object):
                 pickle.dump(self.data, file)
         else:
             object.__setattr__(self, key, value)
-    
+
     def __getattribute__(self, key):
         if key not in [ "app", "data" ]:
             return self.data[key]
         else:
-            return object.__getattribute__(self, key)        
+            return object.__getattribute__(self, key)
+
+    def __getitem__(self, key):
+        if key not in [ "app", "data" ]:
+            if key in self.data:
+                return self.data[key]
+            else:
+                return None
+        else:
+            return object.__getattribute__(self, key)

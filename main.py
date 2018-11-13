@@ -40,6 +40,8 @@ class Game(Widget):
         self.tomatoes = list()
         no_car = random.randint(1,2)
         self.car.children[0].source ="images/car0"+str(no_car)+".png"
+        if self.state["high_score"] :
+            self.high_score = self.state.high_score
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
@@ -80,6 +82,7 @@ class Game(Widget):
 
             # Réinitialise en cas de collision
             if t.collide_widget(self.car):
+                self.state.high_score = self.high_score
                 self.reset()
                 break
 
