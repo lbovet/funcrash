@@ -9,7 +9,7 @@ class State(object):
     def __init__(self, app):
         self.app = app
         try:
-            with open(self.app.user_data_dir + "/state") as file:
+            with open("./state") as file:
                 self.data = pickle.load(file)
         except:
             pass
@@ -18,7 +18,7 @@ class State(object):
         if key not in [ "app", "data" ]:
             self.data[key] = value
             try:
-                with open(self.app.user_data_dir + "/state", "w") as file:
+                with open("./state", "w") as file:
                     pickle.dump(self.data, file)
             except:
                 pass
