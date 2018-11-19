@@ -34,7 +34,7 @@ class Game(Widget):
         self.current_tick = 2
         self.periode_tomates = self.periode_tomates_initiale * self.tempo
         self.road.speed = self.road_speed_initiale
-        self.car.current_piste = 2
+        self.car.reset()
         for tom in self.tomatoes:
             self.remove_widget(tom)
         self.tomatoes = list()
@@ -85,8 +85,6 @@ class Game(Widget):
                 self.state.high_score = self.high_score
                 self.reset()
                 break
-
-        self.car.tick()
 
     def on_touch_down(self, touch):
         if touch.y > self.height / 2:

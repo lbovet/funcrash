@@ -1,4 +1,5 @@
 from kivy.uix.widget import Widget
+from kivy.animation import Animation
 from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty
 from kivy.logger import Logger
 from kivy.core.window import Window
@@ -8,23 +9,27 @@ class Car(Widget):
     y = NumericProperty(0)
     current_piste = 2
 
+    def reset(self):
+        self.calcule_position()
+
     def calcule_position(self):
-        self.y = self.road.hauteur_piste * self.current_piste
+        new_y = self.road.hauteur_piste * self.current_piste
+        anim = Animation(y=new_y, duration=0.1)
+        anim.start(self)
 
     def up(self):
         if(self.current_piste < 4):
             self.current_piste = self.current_piste + 1
+        self.calcule_position()
 
     def down(self):
         if(self.current_piste > 0):
             self.current_piste = self.current_piste - 1
-
-    def tick(self):
         self.calcule_position()
         
     def __init__(self, **kwargs):
         super(Car, self).__init__(**kwargs)
-        Window.bind(on_key_down=self.key)
+        Window.bind(on_key_down=self.key)        
 
     def key(self, *args):
         if args[2] == 82:
