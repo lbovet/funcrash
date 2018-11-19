@@ -25,6 +25,8 @@ class Game(Widget):
     periode_accel = 300
     speed_mult = 1.1
     current_tick = -5
+    touch_y = 0
+    prev_touch_y = 0
 
     def __init__(self, state, **kwargs):
         super(Game, self).__init__(**kwargs)
@@ -86,11 +88,18 @@ class Game(Widget):
                 self.reset()
                 break
 
-    def on_touch_down(self, touch):
-        if touch.y > self.height / 2:
+        if self.touch_y > self.prev_touch_y + 0.1:
             self.car.up()
-        else:
+        if self.touch_y < self.prev_touch_y - 0.1:
             self.car.down()
+        self.prev_touch_y = self.touch_y
+
+    def on_touch_down(self, touch):
+        self.touch_y = touch.sy
+        self.prev_touch_y = touch.sy
+
+    def on_touch_move(self, touch):
+        self.touch_y = touch.sy
 
 class FuncrashApp(App):
     road = ObjectProperty(Road())
