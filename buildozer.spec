@@ -1,6 +1,6 @@
 [app]
 
-version = 0.12
+version = 0.12.1
 
 # (str) Title of your application
 title = Fun Crash
