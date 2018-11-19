@@ -1,4 +1,5 @@
 # coding: utf-8
+from kivy.core.window import Window
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import NumericProperty, ListProperty, ObjectProperty, StringProperty
@@ -25,8 +26,7 @@ class Game(Widget):
     periode_accel = 300
     speed_mult = 1.1
     current_tick = -5
-    touch_y = 0
-    prev_touch_y = 0
+    move = 0
 
     def __init__(self, state, **kwargs):
         super(Game, self).__init__(**kwargs)
@@ -88,18 +88,21 @@ class Game(Widget):
                 self.reset()
                 break
 
-        if self.touch_y > self.prev_touch_y + 0.1:
-            self.car.up()
-        if self.touch_y < self.prev_touch_y - 0.1:
-            self.car.down()
-        self.prev_touch_y = self.touch_y
-
     def on_touch_down(self, touch):
-        self.touch_y = touch.sy
-        self.prev_touch_y = touch.sy
+        self.move = 0
 
     def on_touch_move(self, touch):
-        self.touch_y = touch.sy
+        move = touch.sy - touch.psy
+        if move > 0:
+            move = 1
+        if move < 0:
+            move = -1
+        if not move == self.move:
+            if move > 0:
+                self.car.up()
+            if move < 0:
+                self.car.down()
+            self.move = move
 
 class FuncrashApp(App):
     road = ObjectProperty(Road())
