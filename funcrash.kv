@@ -14,37 +14,46 @@
     #     source: 'images/road01.png'
     #     allow_stretch: True
     #     pos: 0, 0
-    #     size: root.height, root.width  
+    #     size: root.height, root.width
 
 <Car>:
-    size: image.size    
+    size: image.size
     pos: image.width / 2, self.y
     road: app.road
     Image:
         id: image
-        source: 'images/car01.png'
+        source: 'images/car02.png'
         pos: root.pos
-        size: root.road.hauteur_piste * self.image_ratio, root.road.hauteur_piste-1    
+        size: root.road.hauteur_piste * self.image_ratio, root.road.hauteur_piste-1
 
 <Tomato>:
     size: image.size
     pos: self.x, self.y
-    speed: root.road.longueur / 100
     Image:
         id: image
         source: 'images/tomato01.png'
         pos: root.pos
-        size: root.road.hauteur_piste, root.road.hauteur_piste / self.image_ratio 
+        size: (root.road.hauteur_piste / 2) * self.image_ratio, root.road.hauteur_piste / 2
 
 <Game>:
     road: road1
     car: car1
+    tempo: 0.5
     Road:
         id: road1
         size: root.size
         hauteur: root.height
         longueur: root.width
-        Car: 
+        speed: 0.03 * car1.width / root.tempo
+        Car:
             id: car1
             road: road1
-        
+    Label:
+        pos: 20, 0
+        font_size: "30sp"
+        text: str(int(root.score))
+    Label:
+        pos: 20, 40
+        font_size: "30sp"
+        color: 1,0.5,0,1
+        text: str(int(root.high_score))

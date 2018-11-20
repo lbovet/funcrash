@@ -1,5 +1,7 @@
 [app]
 
+version = 0.13
+
 # (str) Title of your application
 title = Fun Crash
 
@@ -27,19 +29,9 @@ source.exclude_dirs = local
 # (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,images/*/*.jpg
 
-# (str) Application versioning (method 1)
-version = 0.4
-
-# (str) Application versioning (method 2)
-# version.regex = __version__ = ['"](.*)['"]
-# version.filename = %(source.dir)s/main.py
-
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = kivy, python3crystax==3.6
-
-
-
+requirements = kivy==1.10.1, python3crystax==3.6, paho-mqtt
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -78,7 +70,7 @@ osx.kivy_version = 1.9.1
 #
 
 # (bool) Indicate if the application should be fullscreen or not
-fullscreen = 0
+fullscreen = 1
 
 # (string) Presplash background color (for new android toolchain)
 # Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
@@ -91,13 +83,13 @@ fullscreen = 0
 #android.permissions = INTERNET
 
 # (int) Android API to use
-#android.api = 19
+android.api = 27
 
 # (int) Minimum API required
 #android.minapi = 9
 
 # (int) Android SDK version to use
-#android.sdk = 20
+android.sdk = 23
 
 # (str) Android NDK version to use
 #android.ndk = 9c
@@ -107,7 +99,8 @@ android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.1
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-#android.ndk_path =
+android.ndk_path = /home/kivy/Android/android-ndk-r16b/
+#android.ndk_path = /home/kivy/Android/crystax-ndk-10.3.2/
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
 #android.sdk_path =
@@ -200,7 +193,7 @@ android.arch = armeabi-v7a
 #
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
-#p4a.source_dir =
+p4a.source_dir = /home/kivy/Repos/python-for-android/
 
 # (str) The directory in which python-for-android should look for your own build recipes (if any)
 #p4a.local_recipes =
