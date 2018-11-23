@@ -57,3 +57,20 @@
         font_size: "30sp"
         color: 1,0.5,0,1
         text: str(int(root.high_score))
+
+<Question>:
+    title: self.titre
+    size_hint: .5, .2    
+    auto_dismiss: False
+    reponse: input.text
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.question
+        TextInput:
+            id: input
+            height: 20
+            multiline: False
+        Button:
+            text: 'OK'
+            on_press: root.ok()
