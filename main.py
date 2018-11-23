@@ -21,6 +21,7 @@ class Game(Widget):
     src = StringProperty(None)
     score = NumericProperty(0)
     high_score = NumericProperty(0)
+    best_player = StringProperty()
     tomatoes = list()
     periode_tomates_initiale = 60
     periode_accel = 300
@@ -42,8 +43,10 @@ class Game(Widget):
         self.tomatoes = list()
         no_car = random.randint(1,6)
         self.car.children[0].source ="images/car0"+str(no_car)+".png"
-        if self.state["high_score"] :
+        if self.state["high_score"]:
             self.high_score = self.state.high_score
+        if self.state["nom"]:
+            self.best_player = self.state.nom
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
@@ -86,19 +89,21 @@ class Game(Widget):
 
             # Réinitialise en cas de collision
             if t.collide_widget(self.car):
-                self.state.high_score = self.high_score
-                self.pause = True
-                q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, self.enregistre_nom)
-                q.open()
-                self.reset()
+                if self.high_score > self.state.high_score:
+                    self.state.high_score = self.high_score
+                    self.pause = True
+                    q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, self.enregistre_nom)
+                    q.open()
+                else:
+                    self.reset()
                 break
 
         self.car.tick()
 
     def enregistre_nom(self, nom):
-        print nom
         self.pause = False
         self.state.nom = nom
+        self.reset()
 
     def on_touch_down(self, touch):
         if touch.y > self.height / 2:
