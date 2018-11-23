@@ -102,6 +102,7 @@ class Game(Widget):
 
     def enregistre_nom(self, nom):
         self.pause = False
+        self.best_player = nom
         self.state.nom = nom
 
     def on_touch_down(self, touch):

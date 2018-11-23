@@ -4,29 +4,39 @@ import pickle
 class State(object):
 
     data = dict()
-    app = None
+    ctx = dict()
 
     def __init__(self, app):
-        self.app = app
+        self.ctx["data_file"] = app.user_data_dir + "/.state"
+        self.ctx["local_file="] = "./.state"
+
         try:
-            with open("./state") as file:
-                self.data = pickle.load(file)
+            with open(self.ctx["data_file"]) as f1:
+                self.data = pickle.load(f1)
         except:
-            pass
+            try:
+                with open(self.ctx["local_file="]) as f2:
+                    self.data = pickle.load(f2)
+            except Error as e:
+                print e
 
     def __setattr__(self, key, value):
         if key not in [ "app", "data" ]:
             self.data[key] = value
             try:
-                with open("./state", "w") as file:
-                    pickle.dump(self.data, file)
+                with open(self.ctx["data_file"], "w") as f1:
+                    pickle.dump(self.data, f1)
             except:
-                pass
+                try:
+                    with open(self.ctx["local_file="], "w") as f2:
+                        pickle.dump(self.data, f2)
+                except Error as e:
+                    print e
         else:
             object.__setattr__(self, key, value)
 
     def __getattribute__(self, key):
-        if key not in [ "app", "data" ]:
+        if key not in [ "ctx", "data" ]:
             if key in self.data:
                 return self.data[key]
             else:
@@ -35,7 +45,7 @@ class State(object):
             return object.__getattribute__(self, key)
 
     def __getitem__(self, key):
-        if key not in [ "app", "data" ]:
+        if key not in [ "ctx", "data" ]:
             if key in self.data:
                 return self.data[key]
             else:
