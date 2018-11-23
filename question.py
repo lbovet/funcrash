@@ -9,7 +9,7 @@ class Question(Popup):
     input = ObjectProperty(rebind=True)
 
     def __init__(self, titre, question, proposition, longueur_max, action):
-        super(Question, self).__init__(pos_hint={'top': .9})
+        super(Question, self).__init__(pos_hint={'top': .94})
         self.titre = titre
         self.question = question
         if(proposition):
