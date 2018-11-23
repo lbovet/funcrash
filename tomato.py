@@ -1,4 +1,5 @@
 from kivy.uix.widget import Widget
+from kivy.animation import Animation
 from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty
 from kivy.logger import Logger
 import random
@@ -8,6 +9,7 @@ class Tomato(Widget):
     x = NumericProperty(0)
     y = NumericProperty(0)
     height = NumericProperty(0)
+    speed = 0
 
     def __init__(self, road):
         self.road = road
@@ -16,6 +18,9 @@ class Tomato(Widget):
         self.x = self.road.longueur
         self.y = self.road.hauteur_piste * self.piste + (self.road.hauteur_piste - self.height) / 2
                    
-
     def tick(self):
-        self.x = self.x - self.road.speed
+        if(self.speed != self.road.speed):
+            self.speed = self.road.speed
+            distance = self.x+self.road.longueur
+            anim = Animation(x=-self.road.longueur, duration=distance/(30*self.speed))
+            anim.start(self)

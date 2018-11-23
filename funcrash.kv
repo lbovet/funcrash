@@ -1,5 +1,6 @@
 #:kivy 1.10.0
 #:import Window kivy.core.window.Window
+#:import random random
 
 <Road>:
     nb_pistes: 5
@@ -13,6 +14,14 @@
             size: self.size
 
 <Car>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self.angle
+            axis: 0, 0, 1
+            origin: self.right, self.center_y
+    canvas.after:
+        PopMatrix            
     size: image.size
     y: self.y
     x: image.height * 0.75
@@ -24,6 +33,14 @@
         size: root.road.hauteur_piste * self.image_ratio, root.road.hauteur_piste-1
 
 <Tomato>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: random.randint(0,360)
+            axis: 0, 0, 1
+            origin: self.center
+    canvas.after:
+        PopMatrix    
     size: image.size
     pos: self.x, self.y
     Image:

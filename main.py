@@ -47,7 +47,7 @@ class Game(Widget):
         if self.state["high_score"]:
             self.high_score = self.state.high_score
         if self.state["nom"]:
-            self.best_player = self.state.nom
+            self.best_player = self.state.nom        
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
@@ -93,6 +93,7 @@ class Game(Widget):
                 if self.high_score > self.state.high_score:
                     self.state.high_score = self.high_score
                     self.pause = True
+                    self.reset()
                     q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, 12, self.enregistre_nom)
                     q.open()
                 else:
@@ -102,7 +103,6 @@ class Game(Widget):
     def enregistre_nom(self, nom):
         self.pause = False
         self.state.nom = nom
-        self.reset()
 
     def on_touch_down(self, touch):
         if touch.y > self.height / 2:

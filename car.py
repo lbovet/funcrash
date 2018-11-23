@@ -7,11 +7,20 @@ from kivy.core.window import Window
 class Car(Widget):
     road = ObjectProperty(rebind=True)
     y = NumericProperty(0)
+    angle=NumericProperty(0)
     current_piste = 2
 
     def bouge(self):
         new_y = self.road.hauteur_piste * self.current_piste
-        anim = Animation(y=new_y, duration=0.05)
+        angle = 0
+        if new_y > self.y:
+            angle = 15
+        if new_y < self.y:
+            angle = -15
+
+        duration = 0.05
+        anim = Animation(y=new_y, duration=duration)
+        anim &= (Animation(angle=angle, duration=duration, t='in_circ') + Animation(angle=0, duration=duration*4, t='out_circ'))
         anim.start(self)
 
     def up(self):
