@@ -11,6 +11,7 @@ from road import Road
 from car import Car
 from tomato import Tomato
 from state import State
+from question import Question
 import random
 
 class Game(Widget):
@@ -25,6 +26,7 @@ class Game(Widget):
     periode_accel = 300
     speed_mult = 1.1
     current_tick = -5
+    pause = False
 
     def __init__(self, state, **kwargs):
         super(Game, self).__init__(**kwargs)
@@ -49,6 +51,8 @@ class Game(Widget):
         self.add_widget(t)
 
     def tick(self, dt):
+        if(self.pause):
+            return
         self.current_tick = self.current_tick + 1
         if(self.current_tick < 1):
             return
@@ -83,10 +87,18 @@ class Game(Widget):
             # Réinitialise en cas de collision
             if t.collide_widget(self.car):
                 self.state.high_score = self.high_score
+                self.pause = True
+                q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, self.enregistre_nom)
+                q.open()
                 self.reset()
                 break
 
         self.car.tick()
+
+    def enregistre_nom(self, nom):
+        print nom
+        self.pause = False
+        self.state.nom = nom
 
     def on_touch_down(self, touch):
         if touch.y > self.height / 2:

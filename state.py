@@ -14,7 +14,7 @@ class State(object):
         except:
             pass
 
-    def __setattr__(self, key, value):        
+    def __setattr__(self, key, value):
         if key not in [ "app", "data" ]:
             self.data[key] = value
             try:
@@ -27,7 +27,10 @@ class State(object):
 
     def __getattribute__(self, key):
         if key not in [ "app", "data" ]:
-            return self.data[key]
+            if key in self.data:
+                return self.data[key]
+            else:
+                return None
         else:
             return object.__getattribute__(self, key)
 
