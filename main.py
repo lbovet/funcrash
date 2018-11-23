@@ -38,6 +38,7 @@ class Game(Widget):
         self.periode_tomates = self.periode_tomates_initiale * self.tempo
         self.road.speed = self.road_speed_initiale
         self.car.current_piste = 2
+        self.car.bouge()
         for tom in self.tomatoes:
             self.remove_widget(tom)
         self.tomatoes = list()
@@ -97,8 +98,6 @@ class Game(Widget):
                 else:
                     self.reset()
                 break
-
-        self.car.tick()
 
     def enregistre_nom(self, nom):
         self.pause = False
