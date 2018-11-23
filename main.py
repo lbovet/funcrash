@@ -92,7 +92,7 @@ class Game(Widget):
                 if self.high_score > self.state.high_score:
                     self.state.high_score = self.high_score
                     self.pause = True
-                    q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, self.enregistre_nom)
+                    q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, 12, self.enregistre_nom)
                     q.open()
                 else:
                     self.reset()

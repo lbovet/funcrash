@@ -1,4 +1,5 @@
 #:kivy 1.10.0
+#:import Window kivy.core.window.Window
 
 <Road>:
     nb_pistes: 5
@@ -10,15 +11,11 @@
         Rectangle:
             pos: self.pos
             size: self.size
-    # Image:
-    #     source: 'images/road01.png'
-    #     allow_stretch: True
-    #     pos: 0, 0
-    #     size: root.height, root.width
 
 <Car>:
     size: image.size
-    pos: image.width / 2, self.y
+    y: self.y
+    x: image.height * 0.75
     road: app.road
     Image:
         id: image
@@ -49,34 +46,42 @@
             id: car1
             road: road1
     Label:
-        pos: 30, 0
-        font_size: 30
+        id: high_score
+        width: root.width / 3
+        right: root.width        
+        y: root.height - self.height
+        height: root.height / 20
+        color: 1,0.5,0,1
+        font_size: self.height
+        text: str(int(root.high_score))+' '+root.best_player
+    Label:
+        id: score
+        width: root.width / 3
+        right: high_score.x
+        y: root.height - self.height
+        height: root.height / 20
+        font_size: self.height
         text: str(int(root.score))
-    Label:
-        pos: 30, 40
-        font_size: 30
-        color: 1,0.5,0,1
-        text: str(int(root.high_score))
-    Label:
-        pos: 180, 40
-        font_size: 30
-        color: 1,0.5,0,1
-        text: root.best_player
 
 <Question>:
     title: self.titre
-    size_hint: .5, .2
+    size_hint: None, None
+    size: Window.width / 2, Window.height / 3
     auto_dismiss: False
     reponse: input.text
+    input: input
     BoxLayout:
         orientation: 'vertical'
         Label:
             text: root.question
+            font_size: root.height / 6
         TextInput:
             id: input
             text: root.proposition
-            height: 20
+            font_size: root.height / 6
             multiline: False
+            focus: True
         Button:
             text: 'OK'
+            font_size: root.height / 6
             on_press: root.ok()
