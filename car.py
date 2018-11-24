@@ -20,7 +20,7 @@ class Car(Widget):
 
         duration = 0.05
         anim = Animation(y=new_y, duration=duration)
-        anim &= (Animation(angle=angle, duration=duration, t='in_circ') + Animation(angle=0, duration=duration*4, t='out_circ'))
+        anim &= (Animation(angle=angle, duration=duration, t='in_circ') + Animation(angle=0, duration=duration*5, t='out_back'))
         anim.start(self)
 
     def up(self):
