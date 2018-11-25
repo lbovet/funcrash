@@ -90,7 +90,7 @@ class Game(Widget):
 
             # Réinitialise en cas de collision
             if t.collide_widget(self.car):
-                if self.high_score > self.state.high_score:
+                if not self.state.high_score or self.high_score > self.state.high_score:
                     self.state.high_score = self.high_score
                     self.pause = True
                     self.reset()

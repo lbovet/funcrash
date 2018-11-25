@@ -24,7 +24,7 @@ class Question(Popup):
         self.input.bind(text=self.check)
 
     def check(self, input, value):
-        if value >= self.longueur_max:
+        if len(value) >= self.longueur_max:
             input.text = value[:self.longueur_max]
 
     def ok(self):

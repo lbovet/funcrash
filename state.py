@@ -11,27 +11,27 @@ class State(object):
         self.ctx["local_file="] = "./.state"
 
         try:
-            with open(self.ctx["data_file"]) as f1:
+            with open(self.ctx["data_file"], "rb") as f1:
                 self.data = pickle.load(f1)
         except:
             try:
-                with open(self.ctx["local_file="]) as f2:
+                with open(self.ctx["local_file="], "rb") as f2:
                     self.data = pickle.load(f2)
-            except Error as e:
-                print e
+            except Exception as e:
+                print(str(e))
 
     def __setattr__(self, key, value):
         if key not in [ "app", "data" ]:
             self.data[key] = value
             try:
-                with open(self.ctx["data_file"], "w") as f1:
+                with open(self.ctx["data_file"], "wb") as f1:
                     pickle.dump(self.data, f1)
             except:
                 try:
-                    with open(self.ctx["local_file="], "w") as f2:
+                    with open(self.ctx["local_file="], "wb") as f2:
                         pickle.dump(self.data, f2)
-                except Error as e:
-                    print e
+                except Exception as e:
+                    print(str(e))
         else:
             object.__setattr__(self, key, value)
 
