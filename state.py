@@ -1,13 +1,17 @@
-from kivy.app import App
 import pickle
+import traceback
 
 class State(object):
 
     data = dict()
     ctx = dict()
 
-    def __init__(self, app):
-        self.ctx["data_file"] = app.user_data_dir + "/.state"
+    def __init__(self, app=None):
+        if app:
+            from kivy.app import App
+            self.ctx["data_file"] = app.user_data_dir + "/.state"
+        else:
+            self.ctx["data_file"] = "./.state2"
         self.ctx["local_file="] = "./.state"
 
         try:
@@ -17,8 +21,8 @@ class State(object):
             try:
                 with open(self.ctx["local_file="], "rb") as f2:
                     self.data = pickle.load(f2)
-            except Exception as e:
-                print(str(e))
+            except:
+                traceback.print_exc()
 
     def __setattr__(self, key, value):
         if key not in [ "app", "data" ]:
@@ -30,8 +34,8 @@ class State(object):
                 try:
                     with open(self.ctx["local_file="], "wb") as f2:
                         pickle.dump(self.data, f2)
-                except Exception as e:
-                    print(str(e))
+                except:
+                    traceback.print_exc()
         else:
             object.__setattr__(self, key, value)
 

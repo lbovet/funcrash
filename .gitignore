@@ -104,4 +104,4 @@ venv.bak/
 local
 .buildozer/
 bin/
-state
+.state*

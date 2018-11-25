@@ -47,7 +47,7 @@ class Game(Widget):
         if self.state["high_score"]:
             self.high_score = self.state.high_score
         if self.state["nom"]:
-            self.best_player = self.state.nom        
+            self.best_player = self.state.nom
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
