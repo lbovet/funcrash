@@ -9,7 +9,7 @@ class State(object):
     def __init__(self, app=None):
         if app:
             from kivy.app import App
-            self.ctx["data_file"] = app.user_data_dir + "/.state"
+            self.ctx["data_file"] = "./.state"
         else:
             self.ctx["data_file"] = "./.state2"
         self.ctx["local_file="] = "./.state"
