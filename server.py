@@ -38,7 +38,6 @@ class Server(object):
             self.scores = new_list
             if len(self.scores) < 10 and not ajoute:
                 self.scores.append(recu)
-        print self.scores
         self.client.publish("funcrash/global/scores", self.scores, True)
         self.state.scores = self.scores
 
