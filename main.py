@@ -12,6 +12,8 @@ from car import Car
 from tomato import Tomato
 from state import State
 from question import Question
+from info import Info
+from client import Client
 import random
 
 class Game(Widget):
@@ -28,12 +30,31 @@ class Game(Widget):
     speed_mult = 1.1
     current_tick = -5
     pause = False
+    high_scores = list()
 
     def __init__(self, state, **kwargs):
         super(Game, self).__init__(**kwargs)
         self.state = state
+        self.client = Client("funcrash.chee.li", "funcrash", "hamsterrocks")
+        self.client.subscribe("funcrash/global/scores", self.scores_recu)
+
+    def scores_recu(self, scores):
+        self.high_scores = scores
+
+    def start(self):
+        self.pause = False
 
     def reset(self):
+        self.pause = True
+        text = ""
+        for s in self.high_scores:
+            text += str(s.score)
+            text += " "
+            text += s.nom
+            text += "\n"
+        info = Info("High Score", text, self.start)
+        info.open()
+
         self.current_tick = 2
         self.periode_tomates = self.periode_tomates_initiale * self.tempo
         self.road.speed = self.road_speed_initiale
@@ -101,9 +122,11 @@ class Game(Widget):
                 break
 
     def enregistre_nom(self, nom):
+        nom = nom.upper()
         self.pause = False
         self.best_player = nom
         self.state.nom = nom
+        self.client.publish("funcrash/local/score", dict(score=self.high_score, nom=nom))
 
     def on_touch_down(self, touch):
         if touch.y > self.height / 2:

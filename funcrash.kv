@@ -21,7 +21,7 @@
             axis: 0, 0, 1
             origin: self.right, self.center_y
     canvas.after:
-        PopMatrix            
+        PopMatrix
     size: image.size
     y: self.y
     x: image.height * 0.75
@@ -40,7 +40,7 @@
             axis: 0, 0, 1
             origin: self.center
     canvas.after:
-        PopMatrix    
+        PopMatrix
     size: image.size
     pos: self.x, self.y
     Image:
@@ -65,7 +65,7 @@
     Label:
         id: high_score
         width: root.width / 3
-        right: root.width        
+        right: root.width
         y: root.height - self.height
         height: root.height / 20
         color: 1,0.5,0,1
@@ -101,4 +101,16 @@
         Button:
             text: 'OK'
             font_size: root.height / 7
+            on_press: root.ok()
+
+<Info>:
+    title: self.titre
+    size_hint: None, None
+    size: Window.width / 2, Window.height * 0.8
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: root.text
+            font_size: root.height / 12
             on_press: root.ok()
