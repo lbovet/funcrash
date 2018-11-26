@@ -14,6 +14,7 @@ from state import State
 from question import Question
 from info import Info
 from client import Client
+import time
 import random
 
 class Game(Widget):
@@ -29,6 +30,7 @@ class Game(Widget):
     periode_accel = 300
     speed_mult = 1.1
     current_tick = -5
+    no_car = 0
     pause = False
     high_scores = """
         Connecte-toi
@@ -77,7 +79,8 @@ class Game(Widget):
             self.pause = True
             try:
                 if self.high_score > 0:
-                    self.client.publish("funcrash/local/score", dict(score=int(self.high_score), nom=self.best_player))
+                    self.client.publish("funcrash/local/score", 
+                        dict(score=int(self.high_score), nom=self.best_player, last=int(self.score), car=self.no_car, time=time.time()))
             except Exception as e:
                 print(e)
             self.score_info = Info("High Scores", self.high_scores, self.start)
@@ -91,8 +94,8 @@ class Game(Widget):
         for tom in self.tomatoes:
             self.remove_widget(tom)
         self.tomatoes = list()
-        no_car = random.randint(1,6)
-        self.car.children[0].source ="images/car0"+str(no_car)+".png"
+        self.no_car = random.randint(1,6)
+        self.car.children[0].source ="images/car0"+str(self.no_car)+".png"
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
