@@ -30,7 +30,7 @@ class Client(object):
 
     def publish(self, topic, obj, retain=False):
         try:
-            if not isinstance(obj, (list,)) and obj.hasattr(__dict__):
+            if not isinstance(obj, (list,)) and not isinstance(obj, (dict,)) and obj.hasattr(__dict__):
                 d = obj.__dict__
             else:
                 d = obj
@@ -46,8 +46,10 @@ class Client(object):
             traceback.print_exc()
 
     def on_connect(self, client, userdata, flags, rc):
-        for topic in self.subscriptions:
-            self.client.subscribe(topic)
+        if rc==0:
+            print("Connected")
+            for topic in self.subscriptions:
+                self.client.subscribe(topic)
 
     def on_message(self, client, userdata, msg):
         try:

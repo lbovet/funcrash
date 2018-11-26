@@ -106,11 +106,15 @@
 <Info>:
     title: self.titre
     size_hint: None, None
-    size: Window.width / 2, Window.height * 0.8
+    size: Window.width * 0.8, Window.height * 0.8
     auto_dismiss: False
+    button: button
     BoxLayout:
         orientation: 'vertical'
         Button:
+            id: button
             text: root.text
-            font_size: root.height / 12
+            font_size: root.height / 14
             on_press: root.ok()
+            focus: True
+            font_name: 'RobotoMono-Regular'

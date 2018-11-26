@@ -30,30 +30,62 @@ class Game(Widget):
     speed_mult = 1.1
     current_tick = -5
     pause = False
-    high_scores = list()
+    high_scores = """
+        Pour partager ton high score:
+        Paramètres -> 
+            Applications -> 
+                Fun Crash
+        Autoriser les permissions:
+        - Stockage
+        - Internet
+    """
+    score_info = None
 
     def __init__(self, state, **kwargs):
         super(Game, self).__init__(**kwargs)
         self.state = state
-        self.client = Client("funcrash.chee.li", "funcrash", "hamsterrocks")
-        self.client.subscribe("funcrash/global/scores", self.scores_recu)
+        try:
+            import cred
+            self.client = Client(cred.host, cred.server_username, cred.server_password)
+        except ImportError:
+            self.client = Client("localhost", "", "")
+        except Exception:
+            pass
+        try:
+            self.client.subscribe("funcrash/global/scores", self.scores_recu)
+        except Exception:
+            pass
 
     def scores_recu(self, scores):
-        self.high_scores = scores
+        text = ""
+        for s in scores:
+            text += '{: >12}'.format(s.nom)
+            text += " "
+            text += '{: <12}'.format(str(s.score))
+            text += "\n"
+        self.high_scores = text
+        if self.score_info:
+            self.score_info.text = text
 
     def start(self):
+        self.score_info = None
         self.pause = False
 
     def reset(self):
-        self.pause = True
-        text = ""
-        for s in self.high_scores:
-            text += str(s.score)
-            text += " "
-            text += s.nom
-            text += "\n"
-        info = Info("High Score", text, self.start)
-        info.open()
+        if self.state["high_score"]:
+            self.high_score = self.state.high_score
+        if self.state["nom"]:
+            self.best_player = self.state.nom
+
+        if self.score > 30:
+            self.pause = True
+            try:
+                if self.high_score > 0:
+                    self.client.publish("funcrash/local/score", dict(score=int(self.high_score), nom=self.best_player))
+            except Exception as e:
+                print(e)
+            self.score_info = Info("High Scores", self.high_scores, self.start)
+            self.score_info.open()
 
         self.current_tick = 2
         self.periode_tomates = self.periode_tomates_initiale * self.tempo
@@ -65,10 +97,6 @@ class Game(Widget):
         self.tomatoes = list()
         no_car = random.randint(1,6)
         self.car.children[0].source ="images/car0"+str(no_car)+".png"
-        if self.state["high_score"]:
-            self.high_score = self.state.high_score
-        if self.state["nom"]:
-            self.best_player = self.state.nom
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
@@ -113,20 +141,21 @@ class Game(Widget):
             if t.collide_widget(self.car):
                 if not self.state.high_score or self.high_score > self.state.high_score:
                     self.state.high_score = self.high_score
-                    self.pause = True
-                    self.reset()
-                    q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, 12, self.enregistre_nom)
+                    self.pause = True                    
+                    q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, 12, self.enregistre_nom, self.transform)
                     q.open()
                 else:
                     self.reset()
                 break
 
+    def transform(self, s):
+        return s.strip().upper()
+
     def enregistre_nom(self, nom):
-        nom = nom.upper()
         self.pause = False
         self.best_player = nom
         self.state.nom = nom
-        self.client.publish("funcrash/local/score", dict(score=self.high_score, nom=nom))
+        self.reset()
 
     def on_touch_down(self, touch):
         if touch.y > self.height / 2:
