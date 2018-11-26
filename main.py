@@ -31,13 +31,9 @@ class Game(Widget):
     current_tick = -5
     pause = False
     high_scores = """
-        Pour partager ton high score:
-        Paramètres -> 
-            Applications -> 
-                Fun Crash
-        Autoriser les permissions:
-        - Stockage
-        - Internet
+        Connecte-toi
+        pour partager
+        ton high score
     """
     score_info = None
 
