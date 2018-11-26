@@ -46,7 +46,7 @@ class Game(Widget):
         self.state = state
         try:
             import cred
-            self.client = Client(cred.host, cred.server_username, cred.server_password)
+            self.client = Client(cred.host, cred.app_username, cred.app_password)
         except ImportError:
             self.client = Client("localhost", "", "")
         except Exception:
