@@ -1,7 +1,6 @@
 import paho.mqtt.client as mqtt
 import json
 import traceback
-from argparse import Namespace
 
 class Obj(dict):
     def __getattr__(self, key):
@@ -58,3 +57,7 @@ class Client(object):
                 callback(json.loads(msg.payload, object_hook=lambda d: Obj(d)))
         except:
             traceback.print_exc()
+
+    def close(self):
+        print("Disconnecting")
+        self.client.disconnect()

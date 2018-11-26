@@ -162,13 +162,19 @@ class Game(Widget):
         else:
             self.car.down()
 
+    def close(self):
+        self.client.close()
+
 class FuncrashApp(App):
     road = ObjectProperty(Road())
 
     def build(self):
-        game = Game(State(self))
-        Clock.schedule_interval(game.tick, 1.0 / 30.0)
-        return game
+        self.game = Game(State(self))
+        Clock.schedule_interval(self.game.tick, 1.0 / 30.0)
+        return self.game
+
+    def on_stop(self):
+        self.game.close()
 
 if __name__ == '__main__':
     FuncrashApp().run()
