@@ -15,6 +15,7 @@ from question import Question
 from info import Info
 from client import Client
 import time
+import string
 import random
 
 class Game(Widget):
@@ -74,13 +75,18 @@ class Game(Widget):
             self.high_score = self.state.high_score
         if self.state["nom"]:
             self.best_player = self.state.nom
+        if self.state["id"]:
+            self.id = self.id
+        else:
+            self.id = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+            self.state.id = self.id
 
         if self.score > 30:
             self.pause = True
             try:
                 if self.high_score > 0:
                     self.client.publish("funcrash/local/score", 
-                        dict(score=int(self.high_score), nom=self.best_player, last=int(self.score), car=self.no_car, time=time.time()))
+                        dict(score=int(self.high_score), nom=self.best_player, last=int(self.score), car=self.no_car, time=time.time(), id=self.id))
             except Exception as e:
                 print(e)
             self.score_info = Info("High Scores", self.high_scores, self.start)
