@@ -55,7 +55,7 @@ class Game(Widget):
             pass
 
     def scores_recu(self, scores):
-        text = ""
+        text = u""
         for s in scores:
             text += '{: >12}'.format(s.nom)
             text += " "
@@ -148,7 +148,7 @@ class Game(Widget):
                 break
 
     def transform(self, s):
-        return s.strip().upper()
+        return s.strip().encode('ascii', 'ignore').decode('ascii').upper()
 
     def enregistre_nom(self, nom):
         self.pause = False
