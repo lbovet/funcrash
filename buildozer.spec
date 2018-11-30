@@ -1,6 +1,6 @@
 [app]
 
-version = 0.13
+version = 0.16
 
 # (str) Title of your application
 title = Fun Crash
@@ -80,7 +80,7 @@ fullscreen = 1
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-#android.permissions = INTERNET
+android.permissions = INTERNET
 
 # (int) Android API to use
 android.api = 27

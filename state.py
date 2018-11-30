@@ -1,38 +1,55 @@
-from kivy.app import App
 import pickle
+import traceback
 
 class State(object):
 
     data = dict()
-    app = None
+    ctx = dict()
 
-    def __init__(self, app):
-        self.app = app
+    def __init__(self, app=None):
+        if app:
+            from kivy.app import App
+            self.ctx["data_file"] = "./.state"
+        else:
+            self.ctx["data_file"] = "./.state2"
+        self.ctx["local_file="] = "./.state"
+
         try:
-            with open("./state") as file:
-                self.data = pickle.load(file)
+            with open(self.ctx["data_file"], "rb") as f1:
+                self.data = pickle.load(f1)
         except:
-            pass
+            try:
+                with open(self.ctx["local_file="], "rb") as f2:
+                    self.data = pickle.load(f2)
+            except:
+                traceback.print_exc()
 
-    def __setattr__(self, key, value):        
+    def __setattr__(self, key, value):
         if key not in [ "app", "data" ]:
             self.data[key] = value
             try:
-                with open("./state", "w") as file:
-                    pickle.dump(self.data, file)
+                with open(self.ctx["data_file"], "wb") as f1:
+                    pickle.dump(self.data, f1)
             except:
-                pass
+                try:
+                    with open(self.ctx["local_file="], "wb") as f2:
+                        pickle.dump(self.data, f2)
+                except:
+                    traceback.print_exc()
         else:
             object.__setattr__(self, key, value)
 
     def __getattribute__(self, key):
-        if key not in [ "app", "data" ]:
-            return self.data[key]
+        if key not in [ "ctx", "data" ]:
+            if key in self.data:
+                return self.data[key]
+            else:
+                return None
         else:
             return object.__getattribute__(self, key)
 
     def __getitem__(self, key):
-        if key not in [ "app", "data" ]:
+        if key not in [ "ctx", "data" ]:
             if key in self.data:
                 return self.data[key]
             else:

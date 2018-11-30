@@ -3,6 +3,7 @@ from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProper
 from kivy.logger import Logger
 import random
 
+
 class Tomato(Widget):
     road = ObjectProperty(rebind=True)
     x = NumericProperty(0)
@@ -14,8 +15,8 @@ class Tomato(Widget):
         super(Tomato, self).__init__()
         self.piste = random.randint(0, 4)
         self.x = self.road.longueur
-        self.y = self.road.hauteur_piste * self.piste + (self.road.hauteur_piste - self.height) / 2
-                   
+        self.y = self.road.hauteur_piste * self.piste + \
+            (self.road.hauteur_piste - self.height) / 2
 
     def tick(self):
         self.x = self.x - self.road.speed
