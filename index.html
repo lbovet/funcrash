@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="images/icon01.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/darkly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/sandstone/bootstrap.min.css">
     <title>Fun Crash</title>
 </head>
 
@@ -14,7 +14,24 @@
         <h1>Fun Crash 
         <a href='https://play.google.com/store/apps/details?id=li.chee.funcrash&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
             <img width="200" alt='Disponible sur Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/fr_badge_web_generic.png' /></a></h1>
-        <div id="stats"></div>
+        <div class="row">
+            <div class="col-sm">
+                <div id="games"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div id="highscore_per_car"  style="height: 640px"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div id="games_per_player" style="height: 1200px"></div>
+            </div>
+            <div class="col-sm"></div>
+                <div id="highscore_per_player" style="height: 1200px"></div>
+            </div>
+        </div>            
     </div>
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -24,42 +41,142 @@
     <script>
         $.get("http://funcrash.chee.li/funcrash.log", function (response) {
             scores = response.split("\n")
-            traces = {}
-            data=[]
+            players = {}
+            cars = {}
+            games=[]
             for (var s of scores) {
                 try { 
                     s = JSON.parse(s)
                 } catch(e) {
                     break
-                }
+                }                
                 if(s.time) {
-                    trace = traces[s.nom]
-                    if(!trace) {
-                        trace =  {
+                    if(s.nom == "") {
+                        s.nom = "<empty>"
+                    }
+                    player = players[s.nom]
+                    if(!player) {
+                        player = {}
+                        players[s.nom] = player
+                        player.games = {
                             x: [],
                             y: [],
                             type: 'scatter',
                             mode: 'markers',
                             marker: { size: 12 },
                             name: s.nom
-                        };
-                        traces[s.nom] = trace;                
-                        data.push(trace);
+                        };              
+                        player.game_count = 0;
+                        player.highscore = 0;
+                        games.push(player.games);
                     }
-                    trace.x.push(new Date(s.time*1000));
-                    trace.y.push(s.last);                
+                    player.game_count++;
+                    if(s.last > player.highscore) {
+                        player.highscore = s.last;
+                        player.highscore_car = s.car;
+                    }
+                    player.games.x.push(new Date(s.time*1000));
+                    player.games.y.push(s.last);                                              
+                    if(s.car !== undefined) {
+                        car = cars[s.car]
+                        if(!car) {
+                            car = {
+                                highscore: 0
+                            }
+                            cars[s.car] = car;
+                        }
+                        if(s.last > car.highscore) {
+                            car.highscore = s.last,
+                            car.highscore_name = s.nom
+                        }
+                    }
                 }
             }
-            Plotly.newPlot('stats', data, {
-                title: 'Requests',
+            Plotly.newPlot('games', games, {
+                title: 'Games',
                 xaxis: {
                     autorange: true,
                     type: 'date'
                 },
                 yaxis: {
-                    type: 'log'
+                    //type: 'log'
                 }
             });
+            var sorted_games_per_player = Object.entries(players);
+            sorted_games_per_player.sort( (x,y) => x[1].game_count - y[1].game_count)
+            console.log(sorted_games_per_player)
+            Plotly.newPlot('games_per_player',
+                [{
+                    type: 'bar',
+                    x: sorted_games_per_player.map( x => x[1].game_count),
+                    y: sorted_games_per_player.map( x => x[0]),
+                    orientation: 'h'
+                }], 
+                {
+                    title: 'Game count per player',
+                    yaxis: {
+                        automargin: true
+                    }
+                });
+            var highscore_per_player = Object.entries(players);
+            highscore_per_player.sort((x, y) => x[1].highscore - y[1].highscore)
+            for(var i=0; i < highscore_per_player.length; i++) {
+                highscore_per_player[i][0] = highscore_per_player[i][0] + " - "+ (highscore_per_player.length - i)
+            }
+            Plotly.newPlot('highscore_per_player',
+                [{
+                    type: 'bar',
+                    x: highscore_per_player.map(x => x[1].highscore),
+                    y: highscore_per_player.map(x => x[0]),
+                    orientation: 'h'
+                }],
+                {
+                    title: 'Best score per player',
+                    yaxis: {
+                        automargin: true
+                    },
+                    images: highscore_per_player.map(x => {
+                        return {
+                            "source": "images/car" + ("0" + x[1].highscore_car).slice(-2) + ".png",
+                            "xref": "x",
+                            "yref": "y",
+                            "x": Math.max(x[1].highscore - 100, 400),
+                            "y": x[0],
+                            "sizex": 400,
+                            "sizey": 0.8,
+                            "layer": "above",
+                            "xanchor": "right",
+                            "yanchor": "middle"
+                        }
+                    })
+                });      
+            var highscore_per_car = Object.entries(cars);
+            highscore_per_car.sort((x, y) => x[1].highscore - y[1].highscore)
+            Plotly.newPlot('highscore_per_car',
+                [{
+                    type: 'bar',
+                    x: highscore_per_car.map(x => x[1].highscore),
+                    y: highscore_per_car.map(x => x[0]),
+                    text: highscore_per_car.map(x => x[1].highscore_name),
+                    orientation: 'h'
+                }],
+                {
+                    title: 'Best score per car',
+                    images: highscore_per_car.map(x => {                               
+                              return {
+                                "source": "images/car"+ ("0" + x[0]).slice(-2)+".png",
+                                "xref": "x",
+                                "yref": "y",
+                                "x": x[1].highscore-100,
+                                "y": x[0],
+                                "sizex": 400,
+                                "sizey": 0.8,
+                                "layer": "above",
+                                "xanchor": "right",
+                                "yanchor": "middle"
+                            }
+                    })
+                });                              
         });
     </script>
 </body>
