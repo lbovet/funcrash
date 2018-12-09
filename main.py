@@ -85,7 +85,7 @@ class Game(Widget):
             self.pause = True
             try:
                 if self.high_score > 0:
-                    self.client.publish("funcrash/local/score", 
+                    self.client.publish("funcrash/local/score",
                         dict(score=int(self.high_score), nom=self.best_player, last=int(self.score), car=self.no_car, time=time.time(), id=self.id))
             except Exception as e:
                 print(e)
@@ -100,8 +100,8 @@ class Game(Widget):
         for tom in self.tomatoes:
             self.remove_widget(tom)
         self.tomatoes = list()
-        self.no_car = random.randint(1,6)
-        self.car.children[0].source ="images/car0"+str(self.no_car)+".png"
+        self.no_car = random.randint(1,11)
+        self.car.children[0].source ="images/car"+('%02d' % self.no_car)+".png"
 
     def ajoute_tomate(self):
         t = Tomato(self.road)
@@ -146,7 +146,7 @@ class Game(Widget):
             if t.collide_widget(self.car):
                 if not self.state.high_score or self.high_score > self.state.high_score:
                     self.state.high_score = self.high_score
-                    self.pause = True                    
+                    self.pause = True
                     q = Question("Nom du joueur", "Quel est ton nom?", self.state.nom, 12, self.enregistre_nom, self.transform)
                     q.open()
                 else:
