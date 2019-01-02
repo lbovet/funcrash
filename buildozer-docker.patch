@@ -1,7 +1,7 @@
---- buildozer.spec	2018-11-21 16:47:02.824022467 +0000
-+++ buildozer-docker.spec	2018-11-21 16:46:43.274218726 +0000
+--- buildozer.spec	2019-01-02 22:56:40.202032157 +0300
++++ buildozer.docker	2019-01-02 23:44:31.995633005 +0300
 @@ -83,24 +83,23 @@
- #android.permissions = INTERNET
+ android.permissions = INTERNET
  
  # (int) Android API to use
 -android.api = 27
