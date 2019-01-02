@@ -8,7 +8,7 @@ COPY . app
 RUN sudo chown -Rv user ${WORK_DIR}/app
 #USER ${USER}
 
-RUN cd app && patch -p0 <buildozer-docker.patch && echo buildozer android update \
+RUN cd app && patch -p0 <buildozer-docker.patch && patch -p0 <main-without-cred.patch && echo buildozer android update \
 &&  set -ex \
 && wget --quiet https://github.com/homdx/funcrash/releases/download/${FUNCRASH_VERSION}/dot-buildozer.tar.gz \
 && echo "${FUNCRASH_HASH}  dot-buildozer.tar.gz" | sha256sum -c \
