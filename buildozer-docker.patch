@@ -1,0 +1,40 @@
+--- buildozer.spec	2019-01-02 22:56:40.202032157 +0300
++++ buildozer.docker	2019-01-02 23:44:31.995633005 +0300
+@@ -83,24 +83,23 @@
+ android.permissions = INTERNET
+ 
+ # (int) Android API to use
+-android.api = 27
++#android.api = 27
+ 
+ # (int) Minimum API required
+ #android.minapi = 9
+ 
+ # (int) Android SDK version to use
+-android.sdk = 23
++#android.sdk = 23
+ 
+ # (str) Android NDK version to use
+ #android.ndk = 9c
+-android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.1
+ 
+ # (bool) Use --private data storage (True) or --dir public storage (False)
+ #android.private_storage = True
+ 
+ # (str) Android NDK directory (if empty, it will be automatically downloaded.)
+-android.ndk_path = /home/kivy/Android/android-ndk-r16b/
+-#android.ndk_path = /home/kivy/Android/crystax-ndk-10.3.2/
++#android.ndk_path = /home/kivy/Android/android-ndk-r16b/
++android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.2
+ 
+ # (str) Android SDK directory (if empty, it will be automatically downloaded.)
+ #android.sdk_path =
+@@ -193,7 +192,7 @@
+ #
+ 
+ # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
+-p4a.source_dir = /home/kivy/Repos/python-for-android/
++
+ 
+ # (str) The directory in which python-for-android should look for your own build recipes (if any)
+ #p4a.local_recipes =

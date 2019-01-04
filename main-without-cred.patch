@@ -1,0 +1,25 @@
+--- main.py	2019-01-02 21:24:52.522617783 +0400
++++ main.py.withoutcred	2019-01-02 22:40:28.466570217 +0400
+@@ -44,14 +44,18 @@
+         super(Game, self).__init__(**kwargs)
+         self.state = state
+         try:
+-            import cred
+-            self.client = Client(cred.host, cred.app_username, cred.app_password)
++            print ("Try 1")
++#            import cred
++#            self.client = Client(cred.host, cred.app_username, cred.app_password)
+         except ImportError:
+-            self.client = Client("localhost", "", "")
++            print ("Import Error")
++#            self.client = Client("localhost", "", "")
+         except Exception:
++            print ("Expetion")
+             pass
+         try:
+-            self.client.subscribe("funcrash/global/scores", self.scores_recu)
++#            self.client.subscribe("funcrash/global/scores", self.scores_recu)
++            print ("Try 2")
+         except Exception:
+             pass
+ 

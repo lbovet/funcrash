@@ -31,7 +31,7 @@ source.exclude_dirs = local
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = kivy==1.10.1,paho-mqtt
+requirements = kivy==1.10.1, python3crystax==3.6, paho-mqtt
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -93,6 +93,7 @@ android.sdk = 23
 
 # (str) Android NDK version to use
 #android.ndk = 9c
+android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.1
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
